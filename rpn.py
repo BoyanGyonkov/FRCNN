@@ -35,15 +35,14 @@ class RPN(keras.layers.Layer):
         
         gt_box_for_anchor = np.array([gt_boxes[i] for i in indices_max_iou])
 
-        batch_size = 30
-        pos_samples_per_batch = 20
-        neg_samples_per_batch = 10
+        pos_samples_per_batch = Config.pos_samples_rpn
+        neg_samples_per_batch = Config.neg_samples_rpn
 
         labels = np.zeros(self.anchors.shape[0])
         labels[np.where(values_max_iou > 0.5)] = 1
         pos_samples_number = np.count_nonzero(labels)
         labels[np.where((values_max_iou < 0.1))] = -1
-        print("Pos_samples " , pos_samples_number)
+        #print("Pos_samples " , pos_samples_number)
         
         
         if pos_samples_per_batch > pos_samples_number:
@@ -74,7 +73,7 @@ class RPN(keras.layers.Layer):
         l1 = self.loss_cls(cls_scores, batch_samples, gt_labels)
         l2 = self.loss_reg(gt_boxes, reg_locs, gt_labels)
         lmda = 1
-        print("RPN_l1 " ,l1)
+        #print("RPN_l1 " ,l1)
         
         return l1 +l2
     

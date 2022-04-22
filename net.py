@@ -41,6 +41,9 @@ class FRCNN(tf.keras.Model):
     
                     opt.apply_gradients(zip(grads, self.trainable_variables))
 
+            if(i >-1):
+                self.save_weights(os.path.join("G:\\BG\\FR_model\\V5", (str(i+1)+".h5") ) )
+                
             print("Epoch " , i+1)
 
     def train_rpn(self, img , gt_boxes, learning_rate , feature_extractor , train_vars):
